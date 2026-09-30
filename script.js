@@ -120,24 +120,56 @@ document.querySelectorAll(".map-frame[data-bbox]").forEach((frame) => {
   frame.addEventListener("pointerleave", () => show(0.5, 0.5));
 });
 
-// Contact form: opens the visitor's email app with the message filled in
+// Contact form: sends to FormBold (the form's action URL) without leaving the page
 const form = document.querySelector("#contact-form");
 const formError = document.querySelector("#form-error");
+const formSuccess = document.querySelector("#form-success");
+const submitButton = form.querySelector('button[type="submit"]');
+const submitLabel = document.querySelector("#form-submit-label");
+const MISSING_FIELDS_MESSAGE = formError.textContent;
 
-form.addEventListener("submit", (event) => {
+function showFormError(html) {
+  formError.innerHTML = html;
+  formError.hidden = false;
+}
+
+form.addEventListener("submit", async (event) => {
   event.preventDefault();
+  formSuccess.hidden = true;
+  formError.hidden = true;
+
   const { name, email, subject, message } = form.elements;
   const required = [name, email, message];
   required.forEach((field) => field.setAttribute("aria-invalid", String(!field.checkValidity() || !field.value.trim())));
 
   const invalid = required.find((field) => field.getAttribute("aria-invalid") === "true");
-  formError.hidden = !invalid;
   if (invalid) {
+    showFormError(MISSING_FIELDS_MESSAGE);
     invalid.focus();
     return;
   }
 
-  const mailSubject = subject.value.trim() || `Portfolio enquiry from ${name.value.trim()}`;
-  const body = `${message.value.trim()}\n\n${name.value.trim()}\n${email.value.trim()}`;
-  window.location.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(mailSubject)}&body=${encodeURIComponent(body)}`;
+  const data = new FormData(form);
+  if (!subject.value.trim()) data.set("subject", `Portfolio enquiry from ${name.value.trim()}`);
+
+  submitButton.disabled = true;
+  submitLabel.textContent = "Sending...";
+
+  try {
+    const response = await fetch(form.action, {
+      method: "POST",
+      body: data,
+      headers: { Accept: "application/json" }
+    });
+    if (!response.ok) throw new Error(`FormBold responded with ${response.status}`);
+
+    form.reset();
+    formSuccess.hidden = false;
+  } catch (error) {
+    console.error(error);
+    showFormError(`Sorry, your message couldn't be sent. Please try again, or email me at <a href="mailto:${CONTACT_EMAIL}">${CONTACT_EMAIL}</a>.`);
+  } finally {
+    submitButton.disabled = false;
+    submitLabel.textContent = "Send Message";
+  }
 });

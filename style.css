@@ -387,6 +387,9 @@ body { overflow-x: hidden; }
 .field::placeholder { color: var(--muted-foreground); opacity: .8; }
 .field:focus { outline: none; border-color: var(--primary); }
 .field[aria-invalid="true"] { border-color: var(--destructive); }
+#form-error a { text-decoration: underline; text-underline-offset: 3px; }
+.form-success { color: oklch(48% .13 150); }
+#contact-form button[disabled] { opacity: .7; cursor: wait; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }

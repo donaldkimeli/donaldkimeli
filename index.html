@@ -533,7 +533,7 @@
 
           </div>
 
-          <form id="contact-form" class="bg-white p-6 md:p-8 shadow-[var(--shadow-card)]" novalidate>
+          <form id="contact-form" action="https://formbold.com/s/9kZ1r" method="POST" class="bg-white p-6 md:p-8 shadow-[var(--shadow-card)]" novalidate>
             <div class="grid gap-5">
               <div>
                 <label for="cf-name" class="block font-medium text-foreground">Your name</label>
@@ -552,9 +552,10 @@
                 <textarea id="cf-message" name="message" rows="5" required placeholder="Tell me about your project..." class="field mt-2 resize-none"></textarea>
               </div>
               <p id="form-error" class="text-sm text-destructive" role="alert" hidden>Please add your name, email and a message.</p>
+              <p id="form-success" class="form-success text-sm font-medium" role="status" hidden>Thanks, your message has been sent. I'll get back to you soon.</p>
               <button type="submit" class="inline-flex h-14 w-full items-center justify-center gap-3 bg-primary text-lg font-semibold text-primary-foreground transition-colors hover:bg-primary-hover">
                 <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"/><path d="m21.854 2.147-10.94 10.939"/></svg>
-                Send Message
+                <span id="form-submit-label">Send Message</span>
               </button>
             </div>
           </form>

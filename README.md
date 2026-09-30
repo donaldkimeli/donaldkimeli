@@ -43,7 +43,11 @@ Then go to http://localhost:8000.
 
 ## Contact form
 
-There is no server. "Send Message" opens the visitor's email app with the message already filled in, addressed to `CONTACT_EMAIL`.
+Messages are sent through [FormBold](https://formbold.com) to the endpoint in the form's `action` attribute in `index.html` (`https://formbold.com/s/9kZ1r`). FormBold then forwards them to the email address set up on that FormBold account.
+
+`script.js` sends the form in the background, so the visitor stays on the page and sees a confirmation. If sending fails, they see an error with a direct email link instead. The fields sent are `name`, `email`, `subject` and `message`. If the subject is left blank, it is filled in as "Portfolio enquiry from (name)".
+
+To use a different FormBold form, change only the `action` URL.
 
 ## Deploying to Vercel
 
